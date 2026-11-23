@@ -31,4 +31,30 @@ void main() {
     expect(() => database.agregarTarea('   '), throwsArgumentError);
     expect(await database.listarTareas(), isEmpty);
   });
+
+  test('Edita el título y rechaza cambios vacíos', () async {
+    final id = await database.agregarTarea('Anterior');
+    expect(await database.editarTarea(id, '  Nuevo  '), 1);
+    expect((await database.listarTareas()).single.titulo, 'Nuevo');
+    expect(() => database.editarTarea(id, '   '), throwsArgumentError);
+    expect((await database.listarTareas()).single.titulo, 'Nuevo');
+  });
+
+  test('Actualiza el estado entre pendiente y completada', () async {
+    final id = await database.agregarTarea('Tarea');
+    expect(await database.completarTarea(id, true), 1);
+    expect((await database.listarTareas()).single.completada, isTrue);
+    expect(await database.completarTarea(id, false), 1);
+    expect((await database.listarTareas()).single.completada, isFalse);
+  });
+
+  test('Elimina por identificador sin afectar a otras tareas', () async {
+    final id = await database.agregarTarea('Eliminar');
+    final otro = await database.agregarTarea('Conservar');
+    expect(await database.eliminarTarea(id), 1);
+    final tareas = await database.listarTareas();
+    expect(tareas.length, 1);
+    expect(tareas.single.id, otro);
+    expect(tareas.single.titulo, 'Conservar');
+  });
 }
