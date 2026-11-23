@@ -137,3 +137,42 @@ Se agregaron validaciones para evitar títulos vacíos y mensajes de error cuand
 ### Pruebas
 
 Se incorporaron pruebas automatizadas para comprobar la edición, el cambio de estado y la eliminación de tareas. Los resultados de ejecución se registrarán después de verificar la aplicación.
+
+## Etapa 4. Compatibilidad y pruebas
+
+Se añadió una prueba automatizada de persistencia que cierra y vuelve a abrir una base SQLite real almacenada temporalmente en disco, y comprueba que las altas, consultas, ediciones, cambios de estado y eliminaciones se conserven.
+
+### Pruebas automatizadas
+
+```bash
+flutter pub get
+flutter analyze
+flutter test
+```
+
+### Ejecución nativa
+
+```bash
+flutter run -d linux
+```
+
+Para Android, utiliza el identificador mostrado por `flutter devices`:
+
+```bash
+flutter run -d ID_DISPOSITIVO
+```
+
+### Ejecución web
+
+Los archivos `web/sqlite3.wasm` y `web/drift_worker.dart.js` deben corresponder a una versión compatible con Drift. Antes de ejecutar Chrome:
+
+```bash
+bash tool/verificar_web.sh
+flutter run -d chrome --web-port 8080
+```
+
+El mismo puerto y perfil de Chrome deben conservarse para las comprobaciones de persistencia web. En la pestaña Network de DevTools, `sqlite3.wasm` debe responder con tipo `application/wasm`.
+
+### Resultados de ejecución
+
+Consulta `RESULTADOS_PRUEBAS.md` para el registro de P1 a P6 y de las plataformas verificadas. Los resultados deben completarse después de ejecutar las pruebas.
