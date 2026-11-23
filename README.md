@@ -2,34 +2,113 @@
 
 ## Descripción
 
-Este proyecto corresponde a una práctica de Programación de Dispositivos Móviles, cuyo objetivo es desarrollar una aplicación Flutter que permita administrar tareas utilizando una base de datos SQLite local.
+Aplicación desarrollada con Flutter para administrar tareas utilizando una base de datos SQLite local. El proyecto forma parte de la práctica de persistencia local multiplataforma de la materia Programación de Dispositivos Móviles.
 
-La aplicación está diseñada para trabajar en Android, iOS, Windows, Linux, macOS y web, sin necesitar un servidor externo para guardar la información.
+La aplicación está diseñada para funcionar en Android, iOS, Windows, Linux, macOS y web, sin depender de un servidor externo para almacenar las tareas.
 
-## Tecnología de persistencia
+## Tecnología utilizada
 
-Para almacenar las tareas se eligió SQLite, ya que permite guardar información de manera local y conservarla después de cerrar y volver a abrir la aplicación.
+- Flutter y Dart para el desarrollo de la aplicación.
+- SQLite para el almacenamiento local de las tareas.
+- Drift y drift_flutter para gestionar las operaciones sobre la base de datos.
+- WebAssembly para ejecutar SQLite en navegadores web.
 
-Se utilizará Drift junto con drift_flutter para facilitar el manejo de SQLite y mantener una misma implementación de persistencia para las distintas plataformas.
+Se eligió SQLite porque permite conservar la información entre ejecuciones de la aplicación, a diferencia de una lista almacenada únicamente en memoria.
 
 ## Diseño de la base de datos
 
-La base de datos tendrá una tabla llamada `tareas` con los siguientes campos:
+La aplicación utiliza una tabla llamada `tareas`.
 
 | Campo | Tipo | Descripción |
 |---|---|---|
-| id | INTEGER PRIMARY KEY AUTOINCREMENT | Identificador único de cada tarea |
+| id | INTEGER PRIMARY KEY AUTOINCREMENT | Identificador único de la tarea |
 | titulo | TEXT NOT NULL | Nombre de la tarea |
-| completada | INTEGER NOT NULL DEFAULT 0 | Estado de la tarea: 0 pendiente y 1 completada |
+| completada | INTEGER NOT NULL DEFAULT 0 | Estado: 0 pendiente, 1 completada |
 
-Cada tarea tendrá un identificador único generado automáticamente por SQLite, lo que permitirá modificarla o eliminarla sin confundirla con otras tareas.
+El identificador se genera automáticamente para distinguir cada registro.
 
-## Operaciones previstas
+## Etapa 1. Preparación y diseño
 
-La aplicación permitirá agregar tareas nuevas, consultar las almacenadas, modificar sus títulos, cambiar su estado entre pendiente y completada, y eliminarlas.
+Se preparó el proyecto inicial de Flutter, se revisó su estructura y se seleccionó SQLite con Drift como tecnología de persistencia.
 
-Estas operaciones se realizarán mediante las instrucciones SQL `INSERT`, `SELECT`, `UPDATE` y `DELETE`.
+También se definió la estructura de la tabla `tareas` y las operaciones que posteriormente utilizará la aplicación.
 
-## Estado inicial
+## Etapa 2. Persistencia real
 
-En la primera etapa se preparó el proyecto Flutter, se revisó su estructura inicial y se definió la tecnología y el diseño de la base de datos. La implementación de SQLite y las operaciones sobre las tareas corresponden a las siguientes etapas.
+Se incorporó la conexión a SQLite y se implementaron las siguientes operaciones:
+
+**Alta de tareas**
+
+Permite introducir el título de una tarea y almacenarla en SQLite mediante una instrucción `INSERT`. Se valida que el título no esté vacío ni contenga únicamente espacios.
+
+**Consulta de tareas**
+
+Permite obtener mediante `SELECT` las tareas almacenadas y mostrarlas en pantalla, incluyendo su estado.
+
+Los datos se almacenan localmente para que permanezcan disponibles después de cerrar y volver a abrir la aplicación.
+
+## Estructura del proyecto
+
+- `lib/main.dart`: inicialización de la aplicación.
+- `lib/models/tarea.dart`: modelo de datos de las tareas.
+- `lib/data/tareas_database.dart`: conexión SQLite y operaciones de persistencia.
+- `lib/screens/tareas_page.dart`: interfaz para agregar y consultar tareas.
+- `test/`: pruebas automatizadas.
+- `tool/`: scripts de preparación para SQLite Web.
+
+## Instalación y ejecución
+
+Es necesario tener instalado Flutter y contar con un dispositivo o navegador compatible.
+
+Clonar el repositorio:
+
+```bash
+git clone https://github.com/TU_USUARIO/PracticaSQLite.git
+cd PracticaSQLite
+```
+
+Instalar las dependencias:
+
+```bash
+flutter pub get
+```
+
+Ejecutar la aplicación en Linux:
+
+```bash
+flutter run -d linux
+```
+
+Para ejecutar la aplicación en Chrome, primero preparar los recursos de SQLite Web:
+
+```bash
+bash tool/preparar_web.sh
+```
+
+Después ejecutar:
+
+```bash
+flutter run -d chrome --web-port 8080
+```
+
+## Pruebas
+
+Para verificar el proyecto:
+
+```bash
+flutter analyze
+flutter test
+```
+
+La comprobación de persistencia consiste en crear tres tareas, cerrar completamente la aplicación y abrirla de nuevo para verificar que los registros permanecen almacenados.
+
+**Resultados:** pendientes de registrar después de ejecutar las pruebas en las plataformas correspondientes.
+
+## Estado del desarrollo
+
+- Etapa 1: preparación y diseño.
+- Etapa 2: implementación de altas, consultas y persistencia SQLite.
+- Etapa 3: edición, cambio de estado y eliminación, pendiente.
+- Etapa 4: compatibilidad multiplataforma y verificación final, pendiente.
+
+La implementación está diseñada para las seis plataformas solicitadas. La compatibilidad efectiva se documentará conforme se completen las pruebas.
