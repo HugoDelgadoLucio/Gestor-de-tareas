@@ -50,6 +50,31 @@ class TareasDatabase extends GeneratedDatabase {
     )).toList();
   }
 
+  Future<int> editarTarea(int id, String titulo) {
+    final valor = titulo.trim();
+    if (valor.isEmpty) {
+      throw ArgumentError('El título no puede estar vacío');
+    }
+    return customUpdate(
+      'UPDATE tareas SET titulo = ? WHERE id = ?',
+      variables: [Variable.withString(valor), Variable.withInt(id)],
+    );
+  }
+
+  Future<int> completarTarea(int id, bool completada) {
+    return customUpdate(
+      'UPDATE tareas SET completada = ? WHERE id = ?',
+      variables: [Variable.withInt(completada ? 1 : 0), Variable.withInt(id)],
+    );
+  }
+
+  Future<int> eliminarTarea(int id) {
+    return customUpdate(
+      'DELETE FROM tareas WHERE id = ?',
+      variables: [Variable.withInt(id)],
+    );
+  }
+
   Future<int> agregarTarea(String titulo) {
     final valor = titulo.trim();
     if (valor.isEmpty) {

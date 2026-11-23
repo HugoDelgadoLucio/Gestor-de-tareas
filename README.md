@@ -112,3 +112,28 @@ La comprobación de persistencia consiste en crear tres tareas, cerrar completam
 - Etapa 4: compatibilidad multiplataforma y verificación final, pendiente.
 
 La implementación está diseñada para las seis plataformas solicitadas. La compatibilidad efectiva se documentará conforme se completen las pruebas.
+
+
+## Etapa 3. Operaciones restantes del CRUD
+
+En esta etapa se agregaron las funcionalidades necesarias para completar la administración de tareas mediante SQLite.
+
+### Edición de tareas
+
+Se implementó la posibilidad de modificar el título de una tarea existente utilizando la instrucción `UPDATE` y su identificador. También se valida que el nuevo título no esté vacío.
+
+### Cambio de estado
+
+Las tareas pueden marcarse como completadas o pendientes mediante un checkbox. El estado se almacena en SQLite utilizando los valores 1 y 0.
+
+### Eliminación de tareas
+
+Se implementó la eliminación de registros utilizando `DELETE` y el identificador de cada tarea.
+
+### Validaciones y manejo de errores
+
+Se agregaron validaciones para evitar títulos vacíos y mensajes de error cuando alguna operación no se realiza correctamente.
+
+### Pruebas
+
+Se incorporaron pruebas automatizadas para comprobar la edición, el cambio de estado y la eliminación de tareas. Los resultados de ejecución se registrarán después de verificar la aplicación.
